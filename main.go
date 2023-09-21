@@ -2,22 +2,43 @@ package main
 
 import "fmt"
 
-func void(array []int) []int {
-	n := len(array) - 1
-
-	for n >= 0 && array[n] == 9 {
-		array[n] = 0
-		n--
-	}
-	if n < 0 {
-		return append([]int{1}, array...)
-	} else {
-		array[n]++
-	}
-	return array
+type user struct {
+	id      int16
+	name    string
+	surname string
 }
 
+func debug(u user) {
+	fmt.Printf("%+v\n", u)
+}
+
+// notify реализует метод вывода.
+func (u user) notify() {
+	fmt.Println("Система: добавлен", u.name, u.surname)
+}
+
+// реализация геттер свойств  .
+func (u *user) changeSurname(surname string) {
+	u.surname = surname
+}
+
+func (u *user) changeName(name string) {
+	u.name = name
+}
+
+func (u *user) Send() {
+	u.notify()
+}
+
+// main - это точка входа для приложения.
 func main() {
-	num := []int{1234}
-	fmt.Println(void(num))
+	// Указатели типа user также могут использоваться для методов
+	// объявлен с получателем значения.
+
+	user1 := &user{1, "Egor", "Chervony"}
+	user1.changeName("Егор")
+	user1.changeSurname("Червоный")
+	user1.notify()
+	debug(user{1, "Egor", "Chervony"})
+	fmt.Println("или же" + "{id:1 name:Egor surname:Chervony}") // не нашел ftm свойство чтобы читать много обьектов
 }
